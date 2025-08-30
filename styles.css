@@ -1,0 +1,529 @@
+/* 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 헤더 스타일 */
+.header {
+  text-align: center;
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.floating-hearts i {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 20px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.heart-1 {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+.heart-2 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 1s;
+}
+.heart-3 {
+  top: 60%;
+  left: 20%;
+  animation-delay: 2s;
+}
+.heart-4 {
+  top: 40%;
+  right: 10%;
+  animation-delay: 3s;
+}
+.heart-5 {
+  top: 80%;
+  left: 50%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+.main-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 4rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  animation: fadeInUp 1.5s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+  margin-top: 40px;
+}
+
+.letter-section {
+  margin-bottom: 80px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.letter-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.letter-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* 편지 스타일 */
+.letter-paper {
+  background: linear-gradient(145deg, #fff9f0, #fff5e6);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  transform: rotate(-1deg);
+  transition: transform 0.3s ease;
+}
+
+.letter-paper:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.letter-paper::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, #ff6b6b, #ffa500, #ff6b6b);
+  border-radius: 25px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.letter-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  color: #d63384;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.letter-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #4a4a4a;
+  text-align: justify;
+  margin-bottom: 30px;
+}
+
+.signature {
+  font-family: "Dancing Script", cursive;
+  font-size: 1.3rem;
+  color: #d63384;
+  text-align: right;
+  font-style: italic;
+}
+
+/* 사진 갤러리 */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.photo-frame {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.photo-frame:hover::before {
+  left: 100%;
+}
+
+.photo-frame:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.photo-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  color: #d63384;
+}
+
+.photo-placeholder i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.photo-placeholder p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* 시 컨테이너 */
+.poem-container {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  padding: 50px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.poem-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" patternUnits="userSpaceOnUse" width="20" height="20"><path d="M10,6 Q10,0 15,6 T20,6 Q20,10 15,15 T10,20 Q10,15 5,15 T0,10 Q0,6 5,6 T10,6" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>');
+  opacity: 0.3;
+}
+
+.poem-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.poem {
+  font-size: 1.2rem;
+  line-height: 2;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.poem p {
+  margin-bottom: 10px;
+  animation: fadeInLeft 0.8s ease-out;
+  animation-fill-mode: both;
+}
+
+.poem p:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.poem p:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.poem p:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.poem p:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.poem p:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.poem p:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.poem p:nth-child(8) {
+  animation-delay: 0.7s;
+}
+.poem p:nth-child(9) {
+  animation-delay: 0.8s;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 인터랙티브 하트 */
+.interactive-heart {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.heart-container {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.heart-container:hover {
+  transform: scale(1.1);
+}
+
+.pulse-heart {
+  font-size: 4rem;
+  color: #ff6b6b;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-text {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.message-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.message-box:hover {
+  transform: translateY(-5px);
+}
+
+.message-box h3 {
+  color: #d63384;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+#dynamic-message {
+  font-size: 1.2rem;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+/* 푸터 */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  margin-top: 60px;
+}
+
+.footer-content p {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icons i {
+  font-size: 1.5rem;
+  color: white;
+  animation: bounce 2s infinite;
+}
+
+.social-icons i:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.social-icons i:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* 네비게이션 */
+.navigation {
+  position: fixed;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-link {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  text-decoration: none;
+  color: #d63384;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link:hover {
+  background: #d63384;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .letter-paper {
+    padding: 30px 20px;
+    margin: 0 10px;
+  }
+
+  .photo-gallery {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .poem-container {
+    padding: 30px 20px;
+  }
+
+  .poem-title {
+    font-size: 2rem;
+  }
+
+  .navigation {
+    right: 15px;
+  }
+
+  .nav-link {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
