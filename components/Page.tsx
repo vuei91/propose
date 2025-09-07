@@ -10,10 +10,16 @@ const Page = forwardRef(
     ref: Ref<HTMLDivElement>
   ) => {
     return (
-      <div ref={ref}>
-        <h1>{date}</h1>
+      <div ref={ref} className="relative bg-white border-[1px] rounded-lg !p-4">
+        <div className="absolute right-4 top-4">{date}</div>
         {children}
-        <p>{number}</p>
+        <div
+          className={`absolute bottom-4  ${
+            Number(number) % 2 === 0 ? "right-4" : "left-4"
+          }`}
+        >
+          {number}
+        </div>
       </div>
     );
   }

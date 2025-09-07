@@ -5,9 +5,9 @@ import Page from "../../components/Page";
 export default function MyBook() {
   return (
     // @ts-ignore
-    <HTMLFlipBook width={300} height={500}>
+    <HTMLFlipBook width={600} height={700}>
       <Page date="20250907" number="1">
-        <div className="text-xl font-bold text-blue-500">Hello world</div>
+        <div className="w-full">Hello world</div>
       </Page>
       <Page date="20250907" number="2">
         Page text
