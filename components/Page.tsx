@@ -25,4 +25,6 @@ const Page = forwardRef(
   }
 );
 
+Page.displayName = "Page";
+
 export default Page;
