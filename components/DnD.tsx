@@ -17,7 +17,7 @@ const DnD = () => {
       }}
       bounds="parent"
       enableResizing={false}
-      allowAnyClick={false}
+      disableDragging
     >
       <Rotate />
     </Rnd>
