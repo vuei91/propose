@@ -1,36 +1,27 @@
-"use client";
+import { useRef, useState } from "react";
+import { Rnd } from "react-rnd";
+import Rotate from "./Rotate";
 
-import * as motion from "motion/react-client";
-import { useRef } from "react";
+const DnD = () => {
+  const [rotation, setRotation] = useState(0);
+  const rndRef = useRef<Rnd>(null);
 
-export default function DragConstraints() {
-  const constraintsRef = useRef<HTMLDivElement>(null);
   return (
-    <motion.div ref={constraintsRef} style={constraints}>
-      <motion.div
-        drag
-        dragConstraints={constraintsRef}
-        dragElastic={0.2}
-        style={box}
-      />
-    </motion.div>
+    <Rnd
+      ref={rndRef}
+      default={{
+        x: 0,
+        y: 0,
+        width: 320,
+        height: 200,
+      }}
+      bounds="parent"
+      enableResizing={false}
+      allowAnyClick={false}
+    >
+      <Rotate />
+    </Rnd>
   );
-}
-
-/**
- * ==============   Styles   ================
- */
-
-const constraints = {
-  width: 300,
-  height: 300,
-  backgroundColor: "#ff008877",
-  borderRadius: 10,
 };
 
-const box = {
-  width: 100,
-  height: 100,
-  backgroundColor: "#ff0088",
-  borderRadius: 10,
-};
+export default DnD;

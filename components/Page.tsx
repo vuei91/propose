@@ -11,7 +11,7 @@ const Page = forwardRef(
   ) => {
     return (
       <div ref={ref} className="relative bg-white border-[1px] rounded-lg !p-4">
-        <div className="absolute right-4 top-4">{date}</div>
+        <div className="absolute right-4 top-4 z-10">{date}</div>
         {children}
         <div
           className={`absolute bottom-4  ${
