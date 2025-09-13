@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { useState } from "react";
+import { useModeState } from "../../store";
 
 export const metadata: Metadata = {
   title: "프로포즈 앨범",
