@@ -1,32 +1,43 @@
 "use client";
 
+import { useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
+import Controller from "../../components/Controller";
 import DnD from "../../components/DnD";
 import Page from "../../components/Page";
 import { useModeState } from "../../store";
-import { useEffect, useRef } from "react";
 
 export default function MyBook() {
   const { mode, toggleMode } = useModeState();
+  const flipRef = useRef(null);
+
+  const onNext = () => {
+    if (flipRef.current && mode === "VIEW") {
+      // @ts-ignore
+      flipRef.current.pageFlip().flipNext();
+    }
+  };
+  const onPrev = () => {
+    if (flipRef.current && mode === "VIEW") {
+      // @ts-ignore
+      flipRef.current.pageFlip().flipPrev();
+    }
+  };
+
   return (
     <>
-      <button
-        className="btn btn-soft btn-error fixed top-4 right-4 z-10"
-        onClick={toggleMode}
-      >
-        {mode === "EDIT" ? "VIEW" : "EDIT"}
-      </button>
-      <Container width={600} height={700}>
-        <Page date="20250907" number="2">
+      <Controller />
+      <Container width={600} height={700} ref={flipRef} useMouseEvents={false}>
+        <Page date="20250907" index={1} onNext={onNext} onPrev={onPrev}>
           <DnD />
         </Page>
-        <Page date="20250907" number="2">
+        <Page date="20250907" index={2} onNext={onNext} onPrev={onPrev}>
           Container text
         </Page>
-        <Page date="20250907" number="3">
+        <Page date="20250907" index={3} onNext={onNext} onPrev={onPrev}>
           Container text
         </Page>
-        <Page date="20250907" number="4">
+        <Page date="20250907" index={4} onNext={onNext} onPrev={onPrev}>
           Container text
         </Page>
       </Container>
@@ -35,48 +46,9 @@ export default function MyBook() {
 }
 
 const Container = (props: any) => {
-  const { mode } = useModeState();
-  const ref = useRef(null);
-
-  const onClick = () => {
-    if (ref.current) {
-      // @ts-ignore
-      ref.current.pageFlip().flipNext();
-    }
-  };
-  const onClickPrev = () => {
-    if (ref.current) {
-      // @ts-ignore
-      ref.current.pageFlip().flipPrev();
-    }
-  };
-
-  return mode === "VIEW" ? (
+  return (
     <>
-      <HTMLFlipBook {...props} ref={ref} />
-      <br />
-      <br />
-      <button
-        style={{ margin: 20, border: "1px solid", background: "red" }}
-        onClick={onClick}
-      >
-        next
-      </button>
-      <button
-        style={{ margin: 20, border: "1px solid", background: "red" }}
-        onClick={onClickPrev}
-      >
-        prev
-      </button>
-    </>
-  ) : (
-    <>
-      <HTMLFlipBook useMouseEvents={false} {...props} />
-      <br />
-      <br />
-      <button style={{ margin: 20 }} onClick={onClick}>
-        d
-      </button>
+      <HTMLFlipBook {...props} />
     </>
   );
 };
