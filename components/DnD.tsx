@@ -1,29 +1,57 @@
-import { useRef } from "react";
 import { Rnd } from "react-rnd";
 import { useModeState, useResizeState } from "../store";
 
-const DnD = () => {
-  const rndRef = useRef<Rnd>(null);
+const DnD = ({ id }: { id: number }) => {
   const { mode } = useModeState();
-  const { width, height, rotate } = useResizeState();
+  const { getContent, currentContent, setCurrentContent, setXY } =
+    useResizeState();
   return (
-    <>
-      <Rnd
-        ref={rndRef}
-        default={{
-          x: 0,
-          y: 0,
-          width: 320,
-          height: 200,
+    <Rnd
+      default={{
+        x: getContent(id)?.x ?? 0,
+        y: getContent(id)?.y ?? 0,
+        width: 320,
+        height: 200,
+      }}
+      bounds="parent"
+      enableResizing={false}
+      onDragStop={(_, d) => {
+        setXY(id, d.x, d.y);
+      }}
+      className=" flex justify-center items-center"
+      disableDragging={mode === "VIEW"}
+      onDragStart={() => {
+        if (currentContent?.id !== id) {
+          setCurrentContent(id);
+        }
+      }}
+      onDrag={() => {
+        setCurrentContent(id);
+      }}
+      onMouseDown={() => {
+        if (mode === "VIEW") {
+          setCurrentContent(null);
+          return;
+        }
+        if (id !== currentContent?.id) {
+          setCurrentContent(id);
+        } else {
+          setCurrentContent(null);
+        }
+      }}
+    >
+      <div
+        style={{
+          width: getContent(id)?.width ?? 320,
+          height: getContent(id)?.height ?? 200,
+          transform: `rotate(${getContent(id)?.rotate ?? 0}deg)`,
+          border: currentContent?.id === id ? "3px solid black" : "none",
         }}
-        bounds="parent"
-        enableResizing={false}
-        disableDragging={mode === "VIEW"}
-        className=" flex justify-center items-center"
+        className="bg-yellow-500"
       >
-        <div style={{ width, height }} className="bg-yellow-500"></div>
-      </Rnd>
-    </>
+        {id}
+      </div>
+    </Rnd>
   );
 };
 

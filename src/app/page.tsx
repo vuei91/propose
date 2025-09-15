@@ -5,10 +5,11 @@ import HTMLFlipBook from "react-pageflip";
 import Controller from "../../components/Controller";
 import DnD from "../../components/DnD";
 import Page from "../../components/Page";
-import { useModeState } from "../../store";
+import { useModeState, useResizeState } from "../../store";
 
 export default function MyBook() {
-  const { mode, toggleMode } = useModeState();
+  const { mode } = useModeState();
+  const { contents } = useResizeState();
   const flipRef = useRef(null);
 
   const onNext = () => {
@@ -27,19 +28,18 @@ export default function MyBook() {
   return (
     <>
       <Controller />
-      <Container width={600} height={700} ref={flipRef} useMouseEvents={false}>
-        <Page date="20250907" index={1} onNext={onNext} onPrev={onPrev}>
-          <DnD />
-        </Page>
-        <Page date="20250907" index={2} onNext={onNext} onPrev={onPrev}>
-          Container text
-        </Page>
-        <Page date="20250907" index={3} onNext={onNext} onPrev={onPrev}>
-          Container text
-        </Page>
-        <Page date="20250907" index={4} onNext={onNext} onPrev={onPrev}>
-          Container text
-        </Page>
+      <Container ref={flipRef}>
+        {contents.map((d, i) => (
+          <Page
+            key={d.id}
+            date={d.date}
+            index={i + 1}
+            onNext={onNext}
+            onPrev={onPrev}
+          >
+            {d.page === i + 1 && <DnD id={d.id} />}
+          </Page>
+        ))}
       </Container>
     </>
   );
@@ -48,7 +48,12 @@ export default function MyBook() {
 const Container = (props: any) => {
   return (
     <>
-      <HTMLFlipBook {...props} />
+      <HTMLFlipBook
+        {...props}
+        width={600}
+        height={700}
+        useMouseEvents={false}
+      />
     </>
   );
 };
