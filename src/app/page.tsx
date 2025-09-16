@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
-import Controller from "../../components/Controller";
-import DnD from "../../components/DnD";
-import Page from "../../components/Page";
-import { useModeState, useResizeState } from "../../store";
+import Controller from "../components/Controller";
+import DnD from "../components/DnD";
+import Page from "../components/Page";
+import { useModeState, useResizeState } from "../store";
 
 export default function MyBook() {
   const { mode } = useModeState();
@@ -27,6 +27,7 @@ export default function MyBook() {
 
   return (
     <>
+      <Buttons />
       <Controller />
       <Container ref={flipRef}>
         {contents.map((d, i) => (
@@ -54,6 +55,24 @@ const Container = (props: any) => {
         height={700}
         useMouseEvents={false}
       />
+    </>
+  );
+};
+
+const Buttons = () => {
+  const { mode, toggleMode } = useModeState();
+  return (
+    <>
+      <div className="fixed top-4 left-4">
+        <button className="btn" onClick={toggleMode}>
+          {mode === "VIEW" ? "Edit" : "View"}
+        </button>
+      </div>
+      <div className="fixed top-4 right-4">
+        <button className="btn" onClick={toggleMode}>
+          Save
+        </button>
+      </div>
     </>
   );
 };
