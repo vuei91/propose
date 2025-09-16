@@ -1,53 +1,6 @@
 import { IContent } from "@/IContent";
 import { create } from "zustand";
 
-const data: IContent[] = [
-  {
-    id: 1,
-    date: "20250907",
-    type: "text",
-    width: 320,
-    height: 200,
-    rotate: 0,
-    page: 1,
-    x: 0,
-    y: 0,
-  },
-  {
-    id: 2,
-    date: "20250907",
-    type: "text",
-    width: 320,
-    height: 200,
-    rotate: 0,
-    page: 2,
-    x: 0,
-    y: 0,
-  },
-  {
-    id: 3,
-    date: "20250907",
-    type: "text",
-    width: 320,
-    height: 200,
-    rotate: 0,
-    page: 3,
-    x: 0,
-    y: 0,
-  },
-  {
-    id: 4,
-    date: "20250907",
-    type: "text",
-    width: 320,
-    height: 200,
-    rotate: 0,
-    page: 4,
-    x: 0,
-    y: 0,
-  },
-];
-
 interface IMode {
   mode: "VIEW" | "EDIT";
   toggleMode: () => void;
@@ -61,6 +14,7 @@ export const useModeState = create<IMode>((set) => ({
 
 interface IController {
   contents: IContent[];
+  setContents: (contents: IContent[]) => void;
   getContent: (id: number) => IContent | undefined;
   currentContent: IContent | null;
   setCurrentContent: (id: number | null) => void;
@@ -71,7 +25,7 @@ interface IController {
 }
 
 export const useResizeState = create<IController>((set, get) => ({
-  contents: data,
+  contents: [],
   currentContent: null,
   setCurrentContent: (id: number | null) => {
     if (id === null) {
@@ -81,6 +35,9 @@ export const useResizeState = create<IController>((set, get) => ({
         currentContent: get().getContent(id) || null,
       }));
     }
+  },
+  setContents: (contents: IContent[]) => {
+    set({ contents });
   },
   getContent: (id: number) =>
     get().contents.find((content) => content.id === id),

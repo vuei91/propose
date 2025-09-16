@@ -1,16 +1,23 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
 import Controller from "../components/Controller";
 import DnD from "../components/DnD";
 import Page from "../components/Page";
 import { useModeState, useResizeState } from "../store";
+import { getContents } from "@/API";
 
 export default function Main() {
   const { mode } = useModeState();
-  const { contents } = useResizeState();
+  const { contents, setContents } = useResizeState();
   const flipRef = useRef(null);
+
+  useEffect(() => {
+    getContents().then((res) => setContents(res));
+  }, []);
+
+  console.log("contents", contents);
 
   const onNext = () => {
     if (flipRef.current && mode === "VIEW") {
