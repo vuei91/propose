@@ -1,22 +1,11 @@
 "use client";
 
+import { IContent } from "@/IContent";
 import { useEffect, useState } from "react";
 
-type Content = {
-  id: number;
-  date: string;
-  type: "text" | "image";
-  width: number;
-  height: number;
-  rotate: number;
-  page: number;
-  x: number;
-  y: number;
-};
-
 export default function ContentsPage() {
-  const [contents, setContents] = useState<Content[]>([]);
-  const [newContent, setNewContent] = useState<Omit<Content, "id">>({
+  const [contents, setContents] = useState<IContent[]>([]);
+  const [newContent, setNewContent] = useState<Omit<IContent, "id">>({
     date: new Date().toISOString(),
     type: "text",
     width: 100,

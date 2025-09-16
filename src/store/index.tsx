@@ -1,3 +1,4 @@
+import { IContent } from "@/IContent";
 import { create } from "zustand";
 
 const data: IContent[] = [
@@ -57,18 +58,6 @@ export const useModeState = create<IMode>((set) => ({
   toggleMode: () =>
     set((state: IMode) => ({ mode: state.mode === "EDIT" ? "VIEW" : "EDIT" })),
 }));
-
-interface IContent {
-  id: number;
-  date: string;
-  type: "text" | "image";
-  width: number;
-  height: number;
-  rotate: number;
-  page: number;
-  x: number;
-  y: number;
-}
 
 interface IController {
   contents: IContent[];
