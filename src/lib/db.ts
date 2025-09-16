@@ -1,18 +1,24 @@
 // lib/db.ts
 import { JSONFilePreset } from "lowdb/node";
 
-// DB에 저장될 데이터 타입 정의
-type User = {
+// Content 타입 정의
+export type Content = {
   id: number;
-  name: string;
+  date: string;
+  type: "text" | "image";
+  width: number;
+  height: number;
+  rotate: number;
+  page: number;
+  x: number;
+  y: number;
 };
 
 type Data = {
-  users: User[];
+  contents: Content[];
 };
 
-// JSON 파일과 초기 데이터 설정
-const defaultData: Data = { users: [] };
+const defaultData: Data = { contents: [] };
 
-// data.json 파일에 연결된 DB 객체 생성
+// data.json 파일과 연결된 DB 객체
 export const db = await JSONFilePreset<Data>("data.json", defaultData);
