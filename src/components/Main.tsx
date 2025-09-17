@@ -1,12 +1,12 @@
 "use client";
-import { use, useEffect, useRef, useState } from "react";
+import { getPages, savePages } from "@/API";
+import { IContent, IPage } from "@/types";
+import { useEffect, useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
 import Controller from "../components/Controller";
 import DnD from "../components/DnD";
-import Page from "../components/Page";
 import { useCurrentContentState, useModeState, usePageState } from "../store";
-import { getPages, savePages } from "@/API";
-import { IContent, IPage } from "@/types";
+import Page from "./Page";
 
 export default function Main() {
   const { mode } = useModeState();
@@ -120,7 +120,7 @@ const Buttons = () => {
           </button>
         )}
       </div>
-      <div className="fixed top-4 right-4 flex flex-col gap-2 z-10 w-[100px]">
+      <div className="fixed top-4 right-4 flex flex-col gap-2 z-10">
         <button className="btn btn-primary" onClick={toggleMode}>
           {mode === "VIEW" ? "편집" : "뷰"}
         </button>

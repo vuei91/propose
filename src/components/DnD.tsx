@@ -1,47 +1,48 @@
+import { IContent } from "@/types";
+import { useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import { useCurrentContentState, useModeState, usePageState } from "../store";
-import { IContent } from "@/types";
-import { useEffect } from "react";
 
 const DnD = ({ content }: { content: IContent }) => {
   const { mode } = useModeState();
   const { currentContent, setCurrentContent } = useCurrentContentState();
   const { modifyContent } = usePageState();
+  const dndRef = useRef<Rnd>(null);
   useEffect(() => {
     if (mode === "VIEW") {
       setCurrentContent(null);
     }
   }, [mode]);
+
+  useEffect(() => {
+    dndRef.current?.updatePosition({ x: content?.x, y: content?.y });
+  }, [content]);
+
   return (
     <Rnd
-      default={{
-        x: content?.x ?? 0,
-        y: content?.y ?? 0,
-        width: content?.width ?? 100,
-        height: content?.height ?? 100,
-      }}
-      position={{ x: content?.x ?? 0, y: content?.y ?? 0 }}
-      bounds="parent"
+      bounds={"parent"}
       enableResizing={false}
       disableDragging={mode === "VIEW"}
-      onDragStart={() => {
+      key={content?.id}
+      ref={dndRef}
+      onDragStart={(e, d) => {
         if (mode === "VIEW") return;
         if (currentContent?.id !== content.id) {
-          setCurrentContent(content);
+          setCurrentContent({ ...content, x: d.x, y: d.y });
         } else {
           setCurrentContent(null);
         }
       }}
-      onDrag={(e, d) => {
-        modifyContent(content.id, { x: d.x, y: d.y });
-        setCurrentContent({ ...content, x: d.x, y: d.y });
+      onDrag={() => {
+        setCurrentContent(content);
       }}
       onDragStop={(e, d) => {
         if (currentContent?.id === content.id) {
-          setCurrentContent(content);
+          setCurrentContent({ ...content, x: d.x, y: d.y });
         } else {
           setCurrentContent(null);
         }
+        modifyContent(content.id, { x: d.x, y: d.y });
       }}
     >
       <div
