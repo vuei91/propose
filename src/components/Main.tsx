@@ -65,7 +65,7 @@ const Buttons = () => {
     if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
     const newContent: IContent = {
       id: Date.now(),
-      type: "text",
+      text: "HELLO WORLD",
       width: 100,
       height: 100,
       rotate: 0,

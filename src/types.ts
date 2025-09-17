@@ -7,7 +7,8 @@ export interface IPage {
 
 export interface IContent {
   id: number;
-  type: "text" | "image";
+  src?: string;
+  text?: string;
   width: number;
   height: number;
   rotate: number;

@@ -45,18 +45,20 @@ const DnD = ({ content }: { content: IContent }) => {
         modifyContent(content.id, { x: d.x, y: d.y });
       }}
     >
-      <div
-        style={{
-          width: content?.width ?? 100,
-          height: content?.height ?? 100,
-          transform: `rotate(${content?.rotate ?? 0}deg)`,
-          border: currentContent?.id === content.id ? "3px solid black" : "none",
-          overflow: "auto",
-        }}
-        className="bg-yellow-500"
-      >
-        {content.id}
-      </div>
+      {content?.src && (
+        <img
+          style={{
+            width: content?.width ?? 100,
+            height: content?.height ?? 100,
+            transform: `rotate(${content?.rotate ?? 0}deg)`,
+            border: currentContent?.id === content.id ? "3px solid black" : "none",
+            overflow: "auto",
+          }}
+          draggable={false}
+          src={content?.src}
+          key={content?.id}
+        />
+      )}
     </Rnd>
   );
 };
