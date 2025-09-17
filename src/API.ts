@@ -1,33 +1,20 @@
-import { IContent } from "./IContent";
+import { IContent, IPage } from "./types";
 
 // ✅ 초기 데이터 불러오기
-export async function getContents() {
-  const res = await fetch("/api/contents");
+export async function getPages() {
+  const res = await fetch("/api/pages");
   const data = await res.json();
-  return data as IContent[];
+  return data as IPage[];
 }
-
-// ✅ 생성
-export async function createContent(newContent: Omit<IContent, "id">) {
-  const res = await fetch("/api/contents", {
+// ✅ 변경된 데이터 저장하기
+export async function savePages(pages: IPage[]) {
+  const res = await fetch("/api/pages", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newContent),
+    body: JSON.stringify(pages),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
-  return await res.json();
-}
-
-// ✅ 업데이트
-export async function updateContent(id: number, data: Partial<IContent>) {
-  const res = await fetch(`/api/contents/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...data }),
-  });
-  return await res.json();
-}
-
-// ✅ 삭제
-export async function deleteContent(id: number) {
-  return await fetch(`/api/contents/${id}`, { method: "DELETE" });
+  const data = await res.json();
+  return data as IPage[];
 }

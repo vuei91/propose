@@ -1,4 +1,4 @@
-import { IContent } from "@/IContent";
+import { IContent, IPage } from "@/types";
 import { create } from "zustand";
 
 interface IMode {
@@ -8,73 +8,54 @@ interface IMode {
 
 export const useModeState = create<IMode>((set) => ({
   mode: "VIEW",
-  toggleMode: () =>
-    set((state: IMode) => ({ mode: state.mode === "EDIT" ? "VIEW" : "EDIT" })),
+  toggleMode: () => set((state: IMode) => ({ mode: state.mode === "EDIT" ? "VIEW" : "EDIT" })),
 }));
 
-interface IController {
-  contents: IContent[];
-  setContents: (contents: IContent[]) => void;
-  getContent: (id: number) => IContent | undefined;
-  currentContent: IContent | null;
-  setCurrentContent: (id: number | null) => void;
-  setWidth: (id: number, width: number) => void;
-  setHeight: (id: number, height: number) => void;
-  setRotate: (id: number, rotate: number) => void;
-  setXY: (id: number, x: number, y: number) => void;
+interface IPageState {
+  pages: IPage[];
+  setPages: (pages: IPage[]) => void;
+  addPage: (page: IPage) => void;
+  removePage: (page: number) => void;
+  modfityPage: (id: number, data: Partial<IPage>) => void;
+  addContent: (content: IContent, page: number) => void;
+  removeContent: (id: number) => void;
+  modifyContent: (id: number, data: Partial<IContent>) => void;
 }
 
-export const useResizeState = create<IController>((set, get) => ({
-  contents: [],
+export const usePageState = create<IPageState>((set, get) => ({
+  pages: [],
+  setPages: (pages: IPage[]) => set(() => ({ pages })),
+  setContents: (pages: IPage[]) => set(() => ({ pages })),
+  addContent: (newContent: IContent, page: number) =>
+    set((state) => ({
+      pages: state.pages.map((p) => (p.page === page ? { ...p, contents: [...p.contents, newContent] } : p)),
+    })),
+  removeContent: (id: number) =>
+    set((state) => ({
+      pages: state.pages.map((page) => ({
+        ...page,
+        contents: page.contents.filter((content) => content.id !== id),
+      })),
+    })),
+  modifyContent: (id: number, data: Partial<IContent>) =>
+    set((state) => ({
+      pages: state.pages.map((page) => ({
+        ...page,
+        contents: page.contents.map((content) => (content.id === id ? { ...content, ...data } : content)),
+      })),
+    })),
+  addPage: (page: IPage) => set((state) => ({ pages: [...state.pages, page] })),
+  removePage: (page: number) => set((state) => ({ pages: state.pages.filter((p) => p.page !== page) })),
+  modfityPage: (id: number, data: Partial<IPage>) =>
+    set((state) => ({
+      pages: state.pages.map((page) => (page.id === id ? { ...page, ...data } : page)),
+    })),
+}));
+
+export const useCurrentContentState = create<{
+  currentContent: IContent | null;
+  setCurrentContent: (content: IContent | null) => void;
+}>((set) => ({
   currentContent: null,
-  setCurrentContent: (id: number | null) => {
-    if (id === null) {
-      set(() => ({ currentContent: null }));
-    } else {
-      set(() => ({
-        currentContent: get().getContent(id) || null,
-      }));
-    }
-  },
-  setContents: (contents: IContent[]) => {
-    set({ contents });
-  },
-  getContent: (id: number) =>
-    get().contents.find((content) => content.id === id),
-  setWidth: (id: number, width: number) =>
-    set(() => ({
-      contents: get().contents.map((content) =>
-        content.id === id ? { ...content, width } : content
-      ),
-      currentContent: {
-        ...get().contents.find((c) => c.id === id),
-        width,
-      } as IContent,
-    })),
-  setHeight: (id: number, height: number) =>
-    set(() => ({
-      contents: get().contents.map((content) =>
-        content.id === id ? { ...content, height } : content
-      ),
-      currentContent: {
-        ...get().contents.find((c) => c.id === id),
-        height,
-      } as IContent,
-    })),
-  setRotate: (id: number, rotate: number) =>
-    set(() => ({
-      contents: get().contents.map((content) =>
-        content.id === id ? { ...content, rotate } : content
-      ),
-      currentContent: {
-        ...get().contents.find((c) => c.id === id),
-        rotate,
-      } as IContent,
-    })),
-  setXY: (id: number, x: number, y: number) =>
-    set(() => ({
-      contents: get().contents.map((content) =>
-        content.id === id ? { ...content, x, y } : content
-      ),
-    })),
+  setCurrentContent: (content: IContent | null) => set(() => ({ currentContent: content })),
 }));
