@@ -1,8 +1,6 @@
-1. 앨범 느낌의 컴포넌트를 만듦
-2. 앨범을 넣었다 뺐다가 자유롭게 마우스로 할 수 있도록 - dndkit
-3. 뷰모드를 통해서 사진들이 클릭 되지 않도록
-4. 앨범이 한개씩 넘어가는 이벤트 - react-pageflip
-5. 텍스트도 넣을 수 있도록 -
-6. 이미지가 움직일수 있도록 - react-easy-crop
-7. 이미지를 넣고 텍스트도 넣을 수 있는 블록들을 만들도록 -
-8. 저장 되도록 - 위치가 고정이 되도록
+### To do list
+
+1. add Text
+2. add Image or video
+3. upload image to lowdb
+4. edit text
