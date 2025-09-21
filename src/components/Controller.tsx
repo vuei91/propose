@@ -1,4 +1,6 @@
+import { IContent } from "@/types";
 import { useCurrentContentState, usePageState } from "../store";
+import { SketchPicker } from "react-color";
 
 const Controller = () => {
   const { currentContent } = useCurrentContentState();
@@ -45,7 +47,33 @@ const ImageController = () => {
 };
 
 const TextContoller = () => {
-  return <></>;
+  const { currentContent, setCurrentContent } = useCurrentContentState();
+  return (
+    <div className="fixed right-0 bg-base-200 text-base-content p-4 bottom-0 z-10">
+      <div className="flex flex-col">
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Font Weight</legend>
+          <input type="number" className="input" placeholder="My awesome page" onChange={(e) => setCurrentContent({ ...currentContent, fontWeight: e.target.value } as IContent)} />
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Font Size</legend>
+          <input type="number" className="input" placeholder="My awesome page" onChange={(e) => setCurrentContent({ ...currentContent, fontSize: e.target.value } as IContent)} />
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Font Color</legend>
+          <SketchPicker color={currentContent?.color} onChangeComplete={(color) => setCurrentContent({ ...currentContent, color: color.hex } as IContent)} />
+        </fieldset>
+        <textarea
+          name=""
+          rows={5}
+          id=""
+          onChange={(e) => {
+            setCurrentContent({ ...currentContent, text: e.target.value } as IContent);
+          }}
+        ></textarea>
+      </div>
+    </div>
+  );
 };
 
 export default Controller;

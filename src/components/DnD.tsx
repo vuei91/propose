@@ -59,6 +59,22 @@ const DnD = ({ content }: { content: IContent }) => {
           key={content?.id}
         />
       )}
+      {content?.text && (
+        <div
+          style={{
+            width: content?.width ?? 100,
+            height: content?.height ?? 100,
+            transform: `rotate(${content?.rotate ?? 0}deg)`,
+            border: currentContent?.id === content.id ? "3px solid black" : "none",
+            fontWeight: currentContent?.fontWeight ?? content?.fontWeight,
+            color: currentContent?.color ?? content?.color,
+            fontSize: `${currentContent?.fontSize ?? content?.fontSize}px`,
+            overflow: "auto",
+          }}
+        >
+          {currentContent?.text ?? content?.text}
+        </div>
+      )}
     </Rnd>
   );
 };
