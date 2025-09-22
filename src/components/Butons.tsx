@@ -1,18 +1,20 @@
 import { savePages } from "@/API";
 import { useCurrentContentState, useModeState, usePageState } from "@/store";
 import { IContent, IPage } from "@/types";
+import { ChangeEvent } from "react";
 
 const Buttons = () => {
   const { mode, toggleMode } = useModeState();
   const { pages, addContent, removeContent, addPage, removePage, modfityPage } = usePageState();
   const { currentContent } = useCurrentContentState();
-  const onAdd = () => {
+
+  const onAddText = () => {
     const page = prompt("페이지 번호를 입력하세요");
     if (!page) return;
     if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
     const newContent: IContent = {
       id: Date.now(),
-      text: "HELLO WORLD",
+      text: "텍스트를 입력하세요",
       width: 100,
       height: 100,
       rotate: 0,
@@ -20,6 +22,28 @@ const Buttons = () => {
       y: 0,
     };
     addContent(newContent, Number(page));
+  };
+  const onAddImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const page = prompt("페이지 번호를 입력하세요");
+    if (!page) return;
+    if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const newContent: IContent = {
+          id: Date.now(),
+          src: reader.result as string,
+          width: 100,
+          height: 100,
+          rotate: 0,
+          x: 0,
+          y: 0,
+        };
+        addContent(newContent, Number(page));
+      };
+    }
   };
   const onRemove = () => {
     if (!currentContent) return alert("삭제할 컨텐츠를 선택해주세요");
@@ -39,6 +63,7 @@ const Buttons = () => {
     } as IPage;
     addPage(newPage);
   };
+
   const onSave = () => {
     savePages(pages).then(() => alert("저장되었습니다"));
   };
@@ -73,10 +98,10 @@ const Buttons = () => {
         </button>
         {mode === "EDIT" ? (
           <>
-            <button className="btn btn-secondary" onClick={onAdd}>
+            <button className="btn btn-secondary" onClick={onAddText}>
               컨텐츠 텍스트 추가
             </button>
-            <input type="file" className="file-input file-input-neutral" accept="image/png, image/jpeg" />
+            <input type="file" className="file-input file-input-neutral" accept="image/png, image/jpeg" onChange={onAddImage} />
             <button className="btn btn-secondary" onClick={onRemove}>
               컨텐츠 삭제
             </button>
