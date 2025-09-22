@@ -96,26 +96,26 @@ const Buttons = () => {
         <button className="btn btn-primary" onClick={toggleMode}>
           {mode === "VIEW" ? "편집" : "뷰"}
         </button>
-        {mode === "EDIT" ? (
+        {mode === "EDIT" && (
           <>
-            <button className="btn btn-secondary" onClick={onAddText}>
-              컨텐츠 텍스트 추가
-            </button>
-            <input type="file" className="file-input file-input-neutral" accept="image/png, image/jpeg" onChange={onAddImage} />
-            <button className="btn btn-secondary" onClick={onRemove}>
-              컨텐츠 삭제
-            </button>
-          </>
-        ) : (
-          <>
-            <button className="btn btn-secondary" onClick={onAddPage}>
+            <button className="btn btn-error btn-soft" onClick={onAddPage}>
               페이지 추가
             </button>
-            <button className="btn btn-secondary break-keep" onClick={onRemovePage}>
+            <button className="btn btn-error btn-soft break-keep" onClick={onRemovePage}>
               마지막 페이지 삭제
             </button>
-            <button className="btn btn-secondary break-keep" onClick={onModifyPage}>
+            <button className="btn btn-error btn-soft break-keep" onClick={onModifyPage}>
               페이지 날짜 수정
+            </button>
+            <button className="btn btn-secondary" onClick={onAddText}>
+              텍스트 추가
+            </button>
+            <label className="btn btn-secondary" htmlFor="upload">
+              이미지 추가
+            </label>
+            <input type="file" id="upload" className="hidden" accept="image/*, video/*" onChange={onAddImage} />
+            <button className="btn btn-secondary" onClick={onRemove}>
+              컨텐츠 삭제
             </button>
           </>
         )}
