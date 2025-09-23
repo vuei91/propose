@@ -45,7 +45,7 @@ const DnD = ({ content }: { content: IContent }) => {
         modifyContent(content.id, { x: d.x, y: d.y });
       }}
     >
-      {content?.src && (
+      {content?.imageSrc && (
         <img
           style={{
             width: content?.width ?? 100,
@@ -55,11 +55,11 @@ const DnD = ({ content }: { content: IContent }) => {
             overflow: "auto",
           }}
           draggable={false}
-          src={content?.src}
+          src={content?.imageSrc}
           key={content?.id}
         />
       )}
-      {!content?.src && content?.text && (
+      {!content?.imageSrc && content?.text && (
         <div
           style={{
             width: "100%",
@@ -74,6 +74,11 @@ const DnD = ({ content }: { content: IContent }) => {
           }}
         >
           {content?.text}
+        </div>
+      )}
+      {content?.videoSrc && (
+        <div>
+          <video controls={mode === "VIEW"} src={content?.videoSrc} style={{ width: content?.width ?? 100, height: content?.height ?? 100, transform: `rotate(${content?.rotate ?? 0}deg)`, border: currentContent?.id === content.id ? "3px solid black" : "none", overflow: "auto" }} />
         </div>
       )}
     </Rnd>

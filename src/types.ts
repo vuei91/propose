@@ -8,7 +8,7 @@ export interface IPage {
 export interface IContent {
   // image
   id: number;
-  src?: string;
+  imageSrc?: string;
   width: number;
   height: number;
   rotate: number;
@@ -20,4 +20,6 @@ export interface IContent {
   fontSize?: string | number;
   fontFamily?: string;
   fontWeight?: string | number;
+  // video
+  videoSrc?: string;
 }

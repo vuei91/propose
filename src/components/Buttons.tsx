@@ -1,7 +1,7 @@
 import { savePages } from "@/API";
 import { useCurrentContentState, useModeState, usePageState } from "@/store";
 import { IContent, IPage } from "@/types";
-import { ChangeEvent } from "react";
+import FileController from "./FileController";
 
 const Buttons = () => {
   const { mode, toggleMode } = useModeState();
@@ -22,28 +22,6 @@ const Buttons = () => {
       y: 0,
     };
     addContent(newContent, Number(page));
-  };
-  const onAddImage = (e: ChangeEvent<HTMLInputElement>) => {
-    const page = prompt("페이지 번호를 입력하세요");
-    if (!page) return;
-    if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const newContent: IContent = {
-          id: Date.now(),
-          src: reader.result as string,
-          width: 100,
-          height: 100,
-          rotate: 0,
-          x: 0,
-          y: 0,
-        };
-        addContent(newContent, Number(page));
-      };
-    }
   };
   const onRemove = () => {
     if (!currentContent) return alert("삭제할 컨텐츠를 선택해주세요");
@@ -110,10 +88,7 @@ const Buttons = () => {
             <button className="btn btn-secondary" onClick={onAddText}>
               텍스트 추가
             </button>
-            <label className="btn btn-secondary" htmlFor="upload">
-              이미지 추가
-            </label>
-            <input type="file" id="upload" className="hidden" accept="image/*, video/*" onChange={onAddImage} />
+            <FileController />
             <button className="btn btn-secondary" onClick={onRemove}>
               컨텐츠 삭제
             </button>
