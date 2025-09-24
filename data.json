@@ -7,7 +7,7 @@
       "contents": [
         {
           "id": 11,
-          "type": "text",
+          "type": "image",
           "imageSrc": "https://cdn-front.freepik.com/images/ai/image-generator/cover/image-generator-header.webp?w=3840&h=1920&q=90%203840w,%20https://cdn-front.freepik.com/images/ai/image-generator/cover/image-generator-header.webp?w=7680&h=3840&q=90%207680w",
           "width": 410,
           "height": 229,
@@ -17,6 +17,7 @@
         },
         {
           "id": 1758121042067,
+          "type": "text",
           "text": "안녕하세요 저는 AI 사진입니다 그래서 그런지 이거 띄어쓰기도\n가능하고 좋네요\n하하\n밑으로 쓸경우, 너무 길게 쓸경우에는 화면이 \n좀 작게 느껴지긴 하겠네요\n",
           "width": 367,
           "height": 243,

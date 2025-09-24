@@ -75,7 +75,7 @@ const TextContoller = () => {
     modifyContent(currentContent?.id!, { text: e.target.value });
   };
   return (
-    !currentContent?.imageSrc && (
+    currentContent?.type === "text" && (
       <div className="fixed right-0 bg-base-200 p-4 bottom-0 z-10">
         <div className="flex flex-col">
           <fieldset className="fieldset">

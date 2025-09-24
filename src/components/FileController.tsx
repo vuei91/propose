@@ -1,59 +1,49 @@
 "use client";
-import { useCurrentContentState, usePageState } from "@/store";
+import { useFileListState, usePageState } from "@/store";
 import { IContent } from "@/types";
-import Image from "next/image";
-import { useState, useEffect, ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 export default function FileController() {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [videoURL, setVideoURL] = useState("");
-  const [imageURL, setImageURL] = useState("");
   const { addContent } = usePageState();
-
+  const { files, setFiles, previews, setPreviews } = useFileListState();
   useEffect(() => {
-    if (videoFile) {
-      const url = URL.createObjectURL(videoFile);
-      const page = prompt("페이지 번호를 입력하세요");
-      if (!page) return;
-      if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
+    const urls = [];
+    let i = 0;
+    for (const file of files ?? []) {
+      const url = URL.createObjectURL(file);
+      urls.push(url);
+      let type = null;
+      let imageSrc = null;
+      let videoSrc = null;
+      if (file.type.includes("image")) {
+        type = "image";
+        imageSrc = url;
+      }
+      if (file.type.includes("video")) {
+        type = "video";
+        videoSrc = url;
+      }
       const newContent: IContent = {
-        id: Date.now(),
-        videoSrc: url,
+        id: Date.now() + i,
+        type,
         width: 100,
         height: 100,
         rotate: 0,
+        imageSrc,
+        videoSrc,
         x: 0,
         y: 0,
-      };
-      addContent(newContent, Number(page));
-      return () => URL.revokeObjectURL(url);
+      } as IContent;
+      addContent(newContent, 2);
+      i++;
     }
-    setVideoURL("");
-  }, [videoFile]);
+    setPreviews(urls);
+  }, [files]);
 
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target?.files?.[0];
-    if (file?.type.includes("image")) {
-      const page = prompt("페이지 번호를 입력하세요");
-      if (!page) return;
-      if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const newContent: IContent = {
-          id: Date.now(),
-          imageSrc: reader.result as string,
-          width: 100,
-          height: 100,
-          rotate: 0,
-          x: 0,
-          y: 0,
-        };
-        addContent(newContent, Number(page));
-      };
-    } else if (file?.type?.includes("video")) {
-      setVideoFile(file);
+    const files = e.target?.files;
+    if (files && files.length > 0) {
+      setFiles(files);
     }
   };
 
@@ -62,7 +52,7 @@ export default function FileController() {
       <label className="btn btn-secondary" htmlFor="upload">
         이미지 추가
       </label>
-      <input type="file" id="upload" className="hidden" accept="image/*, video/*" onChange={onChangeFile} />
+      <input type="file" id="upload" className="hidden" multiple accept="image/*, video/*" onChange={onChangeFile} />
     </div>
   );
 }

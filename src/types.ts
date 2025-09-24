@@ -6,6 +6,7 @@ export interface IPage {
 }
 
 export interface IContent {
+  type: "image" | "text" | "video";
   // image
   id: number;
   imageSrc?: string;
