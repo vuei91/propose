@@ -1,6 +1,5 @@
 ### To do list
 
-1. add Text
-2. add Image or video
-3. upload image to lowdb
-4. edit text
+1. add Image or video (server로 전송)
+2. upload image to lowdb (server로 전송)
+3. 이미지 클릭시 확대 modal

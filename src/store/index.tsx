@@ -59,3 +59,10 @@ export const useCurrentContentState = create<{
   currentContent: null,
   setCurrentContent: (content: IContent | null) => set(() => ({ currentContent: content })),
 }));
+
+export const useFileListState = create<{ files?: FileList; setFiles: (files: FileList) => void; previews?: string[]; setPreviews: (previews: string[]) => void }>((set) => ({
+  files: undefined,
+  setFiles: (files: FileList) => set(() => ({ files })),
+  previews: undefined,
+  setPreviews: (previews: string[]) => set(() => ({ previews })),
+}));

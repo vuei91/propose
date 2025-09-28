@@ -5,7 +5,7 @@ import HTMLFlipBook from "react-pageflip";
 import Controller from "../components/Controller";
 import DnD from "../components/DnD";
 import { useModeState, usePageState } from "../store";
-import Buttons from "./Butons";
+import Buttons from "./Buttons";
 import Page from "./Page";
 
 export default function Main() {
