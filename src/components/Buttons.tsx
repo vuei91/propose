@@ -1,18 +1,20 @@
 import { savePages } from "@/API";
 import { useCurrentContentState, useModeState, usePageState } from "@/store";
 import { IContent, IPage } from "@/types";
+import FileController from "./FileController";
 
 const Buttons = () => {
   const { mode, toggleMode } = useModeState();
   const { pages, addContent, removeContent, addPage, removePage, modfityPage } = usePageState();
   const { currentContent } = useCurrentContentState();
-  const onAdd = () => {
+
+  const onAddText = () => {
     const page = prompt("페이지 번호를 입력하세요");
     if (!page) return;
     if (isNaN(Number(page))) return alert("숫자만 입력 가능합니다");
     const newContent: IContent = {
       id: Date.now(),
-      text: "HELLO WORLD",
+      text: "텍스트를 입력하세요",
       width: 100,
       height: 100,
       rotate: 0,
@@ -39,6 +41,7 @@ const Buttons = () => {
     } as IPage;
     addPage(newPage);
   };
+
   const onSave = () => {
     savePages(pages).then(() => alert("저장되었습니다"));
   };
@@ -57,6 +60,14 @@ const Buttons = () => {
     if (!page) return alert("해당 페이지가 없습니다");
     modfityPage(Number(pageNumber), { date });
   };
+  const upload = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget); // multiple file 자동 포함
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    const data = await res.json();
+    console.log(data.files);
+  };
+
   return (
     <>
       <div className="fixed top-4 left-4 z-10 flex gap-2 flex-col">
@@ -73,21 +84,7 @@ const Buttons = () => {
         </button>
         {mode === "EDIT" && (
           <>
-<<<<<<< HEAD
             <button className="btn btn-error btn-soft" onClick={onAddPage}>
-=======
-            <button className="btn btn-secondary" onClick={onAdd}>
-              컨텐츠 텍스트 추가
-            </button>
-            <input type="file" className="file-input file-input-neutral" accept="image/png, image/jpeg" />
-            <button className="btn btn-secondary" onClick={onRemove}>
-              컨텐츠 삭제
-            </button>
-          </>
-        ) : (
-          <>
-            <button className="btn btn-secondary" onClick={onAddPage}>
->>>>>>> parent of c8896b6 (파일추가 로직 구현)
               페이지 추가
             </button>
             <button className="btn btn-error btn-soft break-keep" onClick={onRemovePage}>
@@ -99,10 +96,7 @@ const Buttons = () => {
             <button className="btn btn-secondary" onClick={onAddText}>
               텍스트 추가
             </button>
-            <label className="btn btn-secondary" htmlFor="upload">
-              이미지 추가
-            </label>
-            <input type="file" id="upload" className="hidden" accept="image/*, video/*" onChange={onAddImage} />
+            <FileController />
             <button className="btn btn-secondary" onClick={onRemove}>
               컨텐츠 삭제
             </button>
