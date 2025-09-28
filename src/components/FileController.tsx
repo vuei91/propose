@@ -47,6 +47,42 @@ export default function FileController() {
     }
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files = e.target.files;
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append("files", file); // 같은 key에 여러 개 추가
+    });
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log("files", await res.json());
+
+    alert("업로드 완료!");
+  };
+
+  async function deleteFile(filePath: string) {
+    const res = await fetch("/api/upload", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ filePath }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert(`삭제 완료!`);
+    } else {
+      alert("삭제 실패!");
+    }
+  }
+
   return (
     <div>
       <label className="btn btn-secondary" htmlFor="upload">

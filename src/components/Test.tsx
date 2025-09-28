@@ -1,32 +1,55 @@
 "use client";
+
 import { useState } from "react";
 
-export default function MultiUpload() {
-  const [urls, setUrls] = useState<string[]>([]);
+export default function UploadOnChange() {
+  const [uploading, setUploading] = useState(false);
 
-  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget); // multiple file 자동 포함
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files = e.target.files;
 
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await res.json();
+    setUploading(true);
 
-    // API에서 리턴한 파일 URL 배열
-    setUrls(data.files.map((f: any) => f.url));
+    const formData = new FormData();
+    Array.from(files).forEach((file) => {
+      formData.append("files", file); // 같은 key에 여러 개 추가
+    });
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log("files", await res.json());
+
+    setUploading(false);
+    alert("업로드 완료!");
   };
 
-  return (
-    <div>
-      <form onSubmit={handleUpload}>
-        <input type="file" name="files" multiple />
-        <button type="submit">Upload</button>
-      </form>
+  async function deleteFile(filePath: string) {
+    const res = await fetch("/api/upload", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ filePath }),
+    });
 
-      <div>
-        {urls.map((url, idx) => (
-          <img key={idx} src={url} alt="uploaded" width={200} />
-        ))}
-      </div>
+    const data = await res.json();
+    if (data.success) {
+      alert(`삭제 완료!`);
+    } else {
+      alert("삭제 실패!");
+    }
+  }
+
+  return (
+    <div className="p-4 border rounded">
+      <input type="file" multiple onChange={handleFileChange} />
+      {uploading && <p className="text-sm text-gray-500 mt-2">업로드 중...</p>}
+
+      <button onClick={() => deleteFile("/uploads/85494d53-8cac-4e64-bd09-9bec65acbd6c.png")}>DELETE</button>
     </div>
   );
 }
