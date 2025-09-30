@@ -7,14 +7,15 @@ export interface IPage {
 
 export interface IContent {
   type: "image" | "text" | "video";
-  // image
   id: number;
-  imageSrc?: string;
   width: number;
   height: number;
   rotate: number;
   x: number;
   y: number;
+  // image
+  imageSrc?: string;
+  imageFile?: File;
   // text
   text?: string;
   color?: string;
@@ -23,4 +24,5 @@ export interface IContent {
   fontWeight?: string | number;
   // video
   videoSrc?: string;
+  videoFile?: File;
 }

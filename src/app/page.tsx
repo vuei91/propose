@@ -1,6 +1,6 @@
 "use client";
-import Test from "@/components/Test";
+import Main from "@/components/Main";
 
 export default function MyBook() {
-  return <Test />;
+  return <Main />;
 }

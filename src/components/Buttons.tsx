@@ -5,7 +5,7 @@ import FileController from "./FileController";
 
 const Buttons = () => {
   const { mode, toggleMode } = useModeState();
-  const { pages, addContent, removeContent, addPage, removePage, modfityPage } = usePageState();
+  const { pages, addContent, removeContent, setPages, addPage, removePage, modfityPage, modifyContent } = usePageState();
   const { currentContent } = useCurrentContentState();
   const { previews } = useFileListState();
 
@@ -44,13 +44,15 @@ const Buttons = () => {
     addPage(newPage);
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     if (previews && previews.length > 0) {
       for (const preview of previews) {
         URL.revokeObjectURL(preview);
       }
     }
-    savePages(pages).then(() => alert("저장되었습니다"));
+    const pages = await changeFilePath();
+    console.log("pages", pages);
+    await savePages(pages);
   };
   const onRemovePage = () => {
     removePage(pages[pages.length - 1]?.page!);
@@ -68,22 +70,43 @@ const Buttons = () => {
     modfityPage(Number(pageNumber), { date });
   };
 
-  const handleFileChange = async (files: FileList) => {
-    if (!files) return;
+  const changeFilePath = async () => {
+    let _pages = [...pages];
+    const videoFiles = pages.flatMap((p) => p.contents).filter((c) => c.videoFile);
+    const imageFiles = pages.flatMap((p) => p.contents).filter((c) => c.imageFile);
+    for (let video of videoFiles) {
+      if (video?.videoFile) {
+        const res = await handleFileChange(video.videoFile);
+        _pages = _pages.map((page) => ({
+          ...page,
+          contents: page.contents.map((content) => (content.id === video?.id ? { ...content, videoSrc: res.path, videoFile: undefined } : content)),
+        }));
+      }
+    }
+    for (let image of imageFiles) {
+      if (image.imageFile) {
+        const res = await handleFileChange(image.imageFile);
+        _pages = _pages.map((page) => ({
+          ...page,
+          contents: page.contents.map((content) => (content.id === image?.id ? { ...content, imageSrc: res.path, imageFile: undefined } : content)),
+        }));
+      }
+    }
+    return _pages;
+  };
+
+  const handleFileChange = async (file: File) => {
+    if (!file) return;
 
     const formData = new FormData();
-    Array.from(files).forEach((file) => {
-      formData.append("files", file); // 같은 key에 여러 개 추가
-    });
+    formData.append("file", file); // 같은 key에 여러 개 추가
 
     const res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
 
-    console.log("files", await res.json());
-
-    alert("업로드 완료!");
+    return await res.json();
   };
 
   async function deleteFile(filePath: string) {
